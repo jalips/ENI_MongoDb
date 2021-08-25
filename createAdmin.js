@@ -10,10 +10,7 @@ if(db.getUser("admin")){
 db.createUser({
     user: "admin",
     pwd: "password",
-    roles: [{
-        role: "userAdminAnyDatabase", 
-        db:"admin"
-    }]
+    roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]
 });
 
 

@@ -1,3 +1,7 @@
 mongo -u "admin" -p "password" --authenticationDatabase "admin"
+mongo -u "admin" -p "password" 
 
 mongo -u "formation" -p "password"
+
+db.system.users.find().pretty()
+db.system.users.find({}, {user:true}).pretty()
