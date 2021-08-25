@@ -1,0 +1,1 @@
+mongod --config "C:\_formation\standalone\scripts\mongod.conf" --install --serviceName mongodb-standalone --serviceDisplayName "MongoDB 1"
