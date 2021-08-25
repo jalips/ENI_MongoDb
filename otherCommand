@@ -5,3 +5,7 @@ mongo -u "formation" -p "password"
 
 db.system.users.find().pretty()
 db.system.users.find({}, {user:true}).pretty()
+
+show databases
+use admin
+show collections
