@@ -1,8 +1,7 @@
-var exo_number = 3;
+var exo_number = 7;
 
 db = db.getSiblingDB("admin"); 
 db.auth("admin","password"); 
-
 
 switch(exo_number){
     case 0:
@@ -40,16 +39,41 @@ switch(exo_number){
         var nbAteliers = db.ateliers.count({genre:"SPORT"});
         print("nbAteliers: "+nbAteliers);
         break;
-        
     case 4:
-
-        break;
-        
+        print("Exo 4");
+        db = db.getSiblingDB("adherentdb");
+        var adherents = db.adherents.find({nom: /^M/}, {nom:true, prenom:true, ville:true});
+        var nbAdherents = db.adherents.count({nom: /^M/});
+        print("nbAdherents: "+nbAdherents);
+        while(adherents.hasNext()){
+            printjson(adherents.next());
+        }
+        break; 
     case 5:
-
+        print("Exo 5");
+        
         break;
         
     case 6:
+        print("Exo 6");
+
+        break;
+        
+    case 7:
+        print("Exo 7");
+        db = db.getSiblingDB("adherentdb");
+        var nbAteliers = db.ateliers.count();
+        print("nbAteliers: "+nbAteliers);
+        db.ateliers.insert([{
+            intitule: "TEST",
+            genre: "SCIENCES"
+        }]);
+        var nbAteliers = db.ateliers.count();
+        print("nbAteliers: "+nbAteliers);          
+        break;
+        
+    case 8:
+        print("Exo 8");
 
         break;
     
