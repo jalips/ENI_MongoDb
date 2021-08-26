@@ -17,22 +17,22 @@ switch(exo_number){
         print("Exo 1");
         db = db.getSiblingDB("adherentdb");
         var adherents = db.adherents.find({ville:"NANTES"}, {nom:true, prenom:true, ville:true});
+        var nbAdherents = db.adherents.count({ville:"NANTES"});
         adherents.sort({nom:1});
-        print("nbAdherents: "+adherents.lenght);
+        print("nbAdherents: "+nbAdherents);
         while(adherents.hasNext()){
-            printjson(adherents.next());
+            //printjson(adherents.next());
         }
         break;
     case 2:
         print("Exo 2");
         db = db.getSiblingDB("adherentdb");
-        var adherents = db.adherents.find({ville:"NANTES"}, {nom:true, prenom:true, ville:true});
-        adherents.sort({nom:1});
-        print("nbAdherents: "+adherents.lenght);
+        var adherents = db.adherents.find({age: { $gte:30, $lte:40}}, {nom:true, prenom:true, ville:true});
+        var nbAdherents = db.adherents.count({age: { $gte:30, $lte:40}});
+        print("nbAdherents: "+nbAdherents);
         while(adherents.hasNext()){
-            printjson(adherents.next());
+            //printjson(adherents.next());
         }
-
         break;
         
     case 3:
