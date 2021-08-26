@@ -1,4 +1,4 @@
-var exo_number = 2;
+var exo_number = 3;
 
 db = db.getSiblingDB("admin"); 
 db.auth("admin","password"); 
@@ -34,9 +34,11 @@ switch(exo_number){
             //printjson(adherents.next());
         }
         break;
-        
     case 3:
-
+        print("Exo 3");
+        db = db.getSiblingDB("adherentdb");
+        var nbAteliers = db.ateliers.count({genre:"SPORT"});
+        print("nbAteliers: "+nbAteliers);
         break;
         
     case 4:
