@@ -1,4 +1,4 @@
-var exo_number = 7;
+var exo_number = 9;
 
 db = db.getSiblingDB("admin"); 
 db.auth("admin","password"); 
@@ -12,6 +12,7 @@ switch(exo_number){
             printjson(animateurs.next());
         }
         break;
+    // Atelier 1
     case 1:
         print("Exo 1");
         db = db.getSiblingDB("adherentdb");
@@ -56,9 +57,13 @@ switch(exo_number){
         
     case 6:
         print("Exo 6");
-
+        db.adherents.find(
+            {naissance: {$gte: ISODate("1980-01-01")}},
+            {nom:true, prenom:true, naissance:true}
+        ).forEach(printjson);
         break;
         
+    // Atelier 2
     case 7:
         print("Exo 7");
         db = db.getSiblingDB("adherentdb");
@@ -71,11 +76,53 @@ switch(exo_number){
         var nbAteliers = db.ateliers.count();
         print("nbAteliers: "+nbAteliers);          
         break;
-        
     case 8:
         print("Exo 8");
 
         break;
-    
-}
+        
+    case 9:
+        print("Exo 9");
+        db = db.getSiblingDB("adherentdb");
+        var adherent = db.adherents.findOne({nom:"PARKER"});
+        printjson(adherent);
+        db.adherents.update({nom:"PARKER"},{$set:{email:adherent.nom+adherent.prenom+"@mail.eu"}});
+        var adherent = db.adherents.findOne({nom:"PARKER"});
+        printjson(adherent);
+        break;
+    case 10:
+        print("Exo 10");
 
+        break;
+        
+    // Atelier 3
+    case 11:
+        print("Exo 11");
+        db = db.getSiblingDB("adherentdb");
+        var nbInscriptions = db.inscriptions.count({});
+        print("nbInscriptions: "+nbInscriptions);
+
+        db.clients.aggregate([
+            //{$unwind: "$comptes"},
+            {$project: {
+                atelier_id:"$comptes.numero", 
+                solde:{$sum:"$comptes.operations.montant"}
+        }},
+            {$group: {
+                _id:"$numero", 
+                numero:{ $first:"$numero" }, 
+                solde:{ $sum:"$solde" }
+        }},
+            {$project: {
+                numero:1,
+                solde:1
+        }},
+            {$out: "out_comptes_solde"}
+        ]);
+
+        break;
+    case 12:
+        print("Exo 12");
+
+        break;
+}
