@@ -1,4 +1,4 @@
-var exo_number = 9;
+var exo_number = 11;
 
 db = db.getSiblingDB("admin"); 
 db.auth("admin","password"); 
@@ -98,28 +98,34 @@ switch(exo_number){
     // Atelier 3
     case 11:
         print("Exo 11");
-        db = db.getSiblingDB("adherentdb");
-        var nbInscriptions = db.inscriptions.count({});
-        print("nbInscriptions: "+nbInscriptions);
-
-        db.clients.aggregate([
-            //{$unwind: "$comptes"},
-            {$project: {
-                atelier_id:"$comptes.numero", 
-                solde:{$sum:"$comptes.operations.montant"}
-        }},
-            {$group: {
-                _id:"$numero", 
-                numero:{ $first:"$numero" }, 
-                solde:{ $sum:"$solde" }
-        }},
-            {$project: {
-                numero:1,
-                solde:1
-        }},
-            {$out: "out_comptes_solde"}
-        ]);
-
+        db = db.getSiblingDB("banquedb");
+        db.clients.aggregate([{
+            $unwind: "$comptes"
+        },{
+            $project: {
+                _id: false,
+                client_id: "$_id",
+                nom: true,
+                numero: "$comptes.numero",
+                date: "$operations.date",
+                libelle: "$comptes.operations.libelle",
+                montant: "$comptes.operations.montant"
+            }
+        }, {
+            $match: {
+                date: {
+                    $gte: ISODate('2016-04-01'),
+                    $lt: ISODate('2016-05-01')
+                }
+            }
+        }, {
+            $group: {
+                _id: "$numero",
+                numero: {$first: "$numero"},
+                nom: {$first: "$nom"},
+                operations: {$sum: 1} // count (kind of)
+            }
+        }]).forEach(printjson);
         break;
     case 12:
         print("Exo 12");
